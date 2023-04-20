@@ -19,7 +19,7 @@ defmodule DoclinkPi do
       pid when is_pid(pid) -> :bpe.cache(:terminateLocks, {:terminate, feed}, :undefined)#mock
       _ when is_pid(pid) ->
         case :kvs.index(:lock, :feed, feed, KVS.kvs(mod: :kvs_mnesia)) do
-          x when length(x) <= 2 and is_pid(pid) -> x[0] #mock
+          x when length(x) <= 2 and is_pid(pid) -> :bpe.cache(:lock, {x[0], feed}, [1]) #mock
           _ -> []
         end
       _ -> []
