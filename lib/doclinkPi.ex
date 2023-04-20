@@ -16,10 +16,10 @@ defmodule DoclinkPi do
   def check(feed) do
     pid = :n2o_pi.pid(:async, feed)
     case :bpe.cache(:terminateLocks, {:terminate, feed}) do
-      pid when is_pid(pid) -> :bpe.cache(:terminateLocks, {:terminate, feed}, :undefined)#mock
+      pid when is_pid(pid) -> :bpe.cache(:terminateLocks, {:terminate, pid}, :undefined); #mock
       _ when is_pid(pid) ->
         case :kvs.index(:lock, :feed, feed, KVS.kvs(mod: :kvs_mnesia)) do
-          x when length(x) <= 2 and is_pid(pid) -> :bpe.cache(:lock, {self(), feed}, self()) #mock
+          x when length(x) <= 2 and is_pid(pid) -> :bpe.cache(:lock, {:feed, x}, self()); #mock
           _ -> []
         end
       _ -> []
